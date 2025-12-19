@@ -16,9 +16,9 @@ interface SettingsStore {
 }
 
 const defaultSettings: Settings = {
-  baseUrl: 'https://api.openai.com',
-  apiKey: '',
-  model: 'gpt-4o-mini',
+  baseUrl: 'https://text.pollinations.ai/openai',
+  apiKey: 'none',
+  model: 'openai',
 }
 
 export const useSettingsStore = create<SettingsStore>()(
