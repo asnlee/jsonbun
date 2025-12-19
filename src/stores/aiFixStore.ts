@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { jsonrepair } from 'jsonrepair'
 
 interface AiFixStore {
   mode: 'normal' | 'diff'
@@ -7,6 +8,7 @@ interface AiFixStore {
   originalText: string
   fixedText: string
   explanation: string
+  jsonrepair: (jsonText: string) => void
   requestFix: (jsonText: string) => Promise<void>
   applyFix: () => void
   discardFix: () => void
@@ -20,6 +22,22 @@ export const useAiFixStore = create<AiFixStore>((set, get) => ({
   originalText: '',
   fixedText: '',
   explanation: '',
+
+  jsonrepair: (jsonText: string) => {
+    set({ loading: true, errorMessage: '', originalText: jsonText })
+
+    try {
+      const repaired = jsonrepair(jsonText)
+      set({
+        loading: false,
+        mode: 'diff',
+        fixedText: repaired,
+        explanation: '修复成功',
+      })
+    } catch (error) {
+      useAiFixStore.getState().requestFix(jsonText)
+    }
+  },
 
   requestFix: async (jsonText: string) => {
     set({ loading: true, errorMessage: '', originalText: jsonText })

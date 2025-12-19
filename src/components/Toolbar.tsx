@@ -12,7 +12,7 @@ export function Toolbar() {
 
   const aiFixMode = useAiFixStore((s) => s.mode)
   const loading = useAiFixStore((s) => s.loading)
-  const requestFix = useAiFixStore((s) => s.requestFix)
+  const jsonrepair = useAiFixStore((s) => s.jsonrepair)
   const applyFix = useAiFixStore((s) => s.applyFix)
   const discardFix = useAiFixStore((s) => s.discardFix)
 
@@ -34,7 +34,7 @@ export function Toolbar() {
 
   const handleAiFix = async () => {
     if (!parseState.valid) {
-      await requestFix(jsonText)
+      jsonrepair(jsonText)
     }
   }
 
@@ -148,7 +148,7 @@ export function Toolbar() {
           className="px-3 py-2 rounded bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Wand2 size={16} />
-          <span className="hidden sm:inline">{loading ? '修复中' : 'AI 修复'}</span>
+          <span className="hidden sm:inline">{loading ? '修复中' : '快速修复'}</span>
           <span className="sm:hidden">AI</span>
         </button>
       </div>
