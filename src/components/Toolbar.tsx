@@ -13,6 +13,7 @@ export function Toolbar() {
   const aiFixMode = useAiFixStore((s) => s.mode)
   const loading = useAiFixStore((s) => s.loading)
   const jsonrepair = useAiFixStore((s) => s.jsonrepair)
+  const requestFix = useAiFixStore((s) => s.requestFix)
   const applyFix = useAiFixStore((s) => s.applyFix)
   const discardFix = useAiFixStore((s) => s.discardFix)
 
@@ -32,9 +33,13 @@ export function Toolbar() {
     }
   }
 
-  const handleAiFix = async () => {
+  const handleFix = async () => {
     if (!parseState.valid) {
-      jsonrepair(jsonText)
+      try {
+        jsonrepair(jsonText)
+      } catch (error) {
+        await requestFix(jsonText)
+      }
     }
   }
 
@@ -143,7 +148,7 @@ export function Toolbar() {
         </button>
 
         <button
-          onClick={handleAiFix}
+          onClick={handleFix}
           disabled={parseState.valid || loading}
           className="px-3 py-2 rounded bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >

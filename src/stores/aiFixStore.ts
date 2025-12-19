@@ -35,7 +35,7 @@ export const useAiFixStore = create<AiFixStore>((set, get) => ({
         explanation: '修复成功',
       })
     } catch (error) {
-      useAiFixStore.getState().requestFix(jsonText)
+      console.log('快速修复失败：', error)
     }
   },
 
